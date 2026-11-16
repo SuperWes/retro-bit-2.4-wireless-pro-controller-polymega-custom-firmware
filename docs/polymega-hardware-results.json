@@ -1,0 +1,49 @@
+{
+  "recorded_date": "2026-11-16",
+  "source": "User's direct hardware tests reported in this conversation",
+  "controller": "Retro-Bit Saturn 2.4 GHz Wireless Pro",
+  "connection": "V2 USB receiver on Polymega",
+  "firmware_during_hardware_tests": "Initial mapping and NiGHTS analog tests used stock firmware. Later custom-firmware report is recorded separately below.",
+  "working_mode": "Original three-green-light USB mode",
+  "stock_mapping": {
+    "A": "Saturn A",
+    "B": "Saturn B",
+    "C": "Saturn Z",
+    "X": "Saturn X",
+    "Y": "Saturn Y",
+    "Z": "Saturn C",
+    "L": "Saturn Z",
+    "R": "Saturn C",
+    "ZL": "Saturn L",
+    "ZR": "Saturn R",
+    "left_stick_click": "No action observed",
+    "right_stick_click": "No action observed"
+  },
+  "saturn_analog": {
+    "game": "NiGHTS into Dreams",
+    "polymega_in_game_analog_setting": "ON",
+    "left_stick": "Works; confirmed by user",
+    "connection_used": "USB receiver in working mode, not Saturn-port receiver",
+    "controller_firmware_change_needed": false,
+    "right_stick_saturn_function": "Not established by this test"
+  },
+  "one_light_usb_mode": "Previously tested on Polymega; no controller response",
+  "modified_toggle_firmware_flashed": true,
+  "modified_toggle_firmware_hardware_tested": true,
+  "modified_toggle_report": {
+    "date": "2026-11-16",
+    "release": "v0.1.0-alpha.1",
+    "candidate_sha256": "b3f78325ae7de66e7f416fc9f55a4b191a507c2025790d8caa64157aebc5e935",
+    "source": "User reported successful installation and operation, describing Start+Right as toggling Z and C, then confirmed it works.",
+    "scope": "One controller/receiver setup on Polymega; user report, not independent observation.",
+    "successful_installation_reported": true,
+    "start_right_cz_toggle_reported_working": true,
+    "not_separately_confirmed": [
+      "Every individual button on modified firmware",
+      "Custom-firmware analog behavior",
+      "Receiver power-cycle reset",
+      "Held-chord timing and repeat prevention"
+    ],
+    "failed_flash_recovery_verified": false
+  }
+}

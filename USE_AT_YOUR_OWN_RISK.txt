@@ -1,0 +1,67 @@
+USE AT YOUR OWN RISK - EXPERIMENTAL, UNOFFICIAL FIRMWARE
+=====================================================
+
+Flashing this firmware can permanently disable (brick) your USB receiver.
+Installing it on the wrong device can also disable that device. Do not proceed
+unless you accept the possibility of losing the hardware and paying for its
+repair or replacement.
+
+PROJECT RECOMMENDATION
+Keep using stock firmware for normal use. Do not flash your only or irreplaceable
+receiver on the assumption that you can simply reinstall stock firmware later.
+Hardware testing should begin with a spare receiver and an independently
+verified recovery method; no such recovery has been demonstrated for this
+custom image. Using the receiver only on Polymega does not reduce flashing risk.
+
+HARDWARE TARGET
+These custom images are intended ONLY for the Retro-Bit V2 USB receiver used
+with the Saturn 2.4 GHz Wireless Pro controller. Verify the receiver's V2 label.
+NEVER flash these receiver images onto the controller, a Saturn-port receiver,
+a V1 receiver, or another hardware model or revision. If you cannot positively
+identify the hardware, do not flash it.
+
+WHAT HAS AND HAS NOT BEEN VALIDATED
+One user reported successful installation and C/Z toggle operation with the
+custom image on a V2 USB receiver and Polymega on November 16, 2026. This is a
+limited user report, not a broad compatibility or recovery test. Automated
+checks cover reproducible builds, file integrity, selected 8051 instructions
+and simulated USB reports. Passing checks, matching hashes and
+preserving boot-region bytes do NOT establish that flashing is safe or that
+the device will boot, pair, or function correctly afterward. The earlier
+NiGHTS analog test used stock firmware; the later custom-firmware report did
+not separately itemize analog, every button, or receiver power-cycle behavior.
+
+RECOVERY IS NOT GUARANTEED
+Keep the official stock firmware and vendor update instructions available.
+Their availability does not guarantee that a damaged receiver can enter update
+mode or accept a restoration image. No recovery or unbricking procedure has been
+verified for this custom firmware. Interrupted updates and incorrect images can
+leave hardware unusable. The vendor's instructions describe its official update;
+they do not certify or approve this project's modified firmware.
+
+NO WARRANTY OR PROMISED SERVICE
+This project's code, custom firmware, build outputs and documentation are
+supplied AS IS. The project makes no warranty, whether express or implied, about
+compatibility, correctness, safety, suitability for a particular use, or recovery.
+The authors, maintainers and contributors do not promise technical support,
+repair, replacement, reimbursement or continued maintenance. You decide whether
+to use or flash the files and accept the associated risks and costs.
+
+To the extent that applicable law permits, the authors, maintainers and
+contributors disclaim liability for harm resulting from use of this project,
+including damaged or unusable hardware, lost settings or data, repair or
+replacement expenses, and interruption of use. Nothing in this notice removes
+rights or excludes liability where applicable law does not allow that exclusion.
+This notice cannot guarantee protection from legal claims.
+
+INDEPENDENT PROJECT AND THIRD-PARTY RIGHTS
+This is an independent, unofficial project. It is not an official release from,
+or endorsed by, Retro-Bit, SEGA or Polymega. Their names identify compatibility
+targets only. Permission to redistribute the vendor firmware has not been
+established. This risk notice grants no license or redistribution rights to
+third-party firmware or documentation and does not resolve that separate issue.
+
+The public distribution contains project code and original documentation, not
+vendor firmware, executables, DLLs, or manuals. The installer obtains the exact
+official package directly from Retro-Bit and modifies it locally. This does not
+grant permission to redistribute the resulting firmware or vendor files.

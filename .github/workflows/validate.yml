@@ -1,0 +1,21 @@
+name: Validate Windows installer
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  installer:
+    runs-on: windows-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+      - name: Package project files only
+        run: python tools/package_release.py --output build/installer.zip
+      - name: Test Windows PowerShell 5.1 installer without flashing
+        run: python tests/test_windows_installer.py --package build/installer.zip

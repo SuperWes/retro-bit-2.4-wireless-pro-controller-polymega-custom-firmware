@@ -1,0 +1,17 @@
+.DS_Store
+__pycache__/
+*.pyc
+/build/
+/verify_cz_reports
+*_decoded.bin
+*.exe
+*.dll
+*.zip
+.env
+.env.*
+
+# Vendor downloads and locally prepared installation packages
+*.bxw
+/vendor/
+/Firmware Package/
+/dist/

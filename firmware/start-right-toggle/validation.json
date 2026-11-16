@@ -1,0 +1,51 @@
+{
+  "status": "passed",
+  "report_comparisons": 589824,
+  "analog_report_checks": 851968,
+  "xy_sweep_reports": 262144,
+  "macro_iterations": 162868,
+  "hardware_tested": false,
+  "scope": "Actual report dispatcher, macro detector/hook, and startup RAM-clear instructions. PS3 template copy and legacy NVM save modeled.",
+  "reproducible_build": "Byte-identical CLI/library rebuild",
+  "candidate_sha256": "b3f78325ae7de66e7f416fc9f55a4b191a507c2025790d8caa64157aebc5e935",
+  "negative_controls": [
+    {
+      "name": "unmodified_stock",
+      "rejected_with": "Start+Right failed to enable correction"
+    },
+    {
+      "name": "missing_ps3_dispatch_hook",
+      "rejected_with": "Macro state did not reach the USB report dispatcher"
+    },
+    {
+      "name": "missing_xinput_dispatch_hook",
+      "rejected_with": "Macro state did not reach the USB report dispatcher"
+    },
+    {
+      "name": "inverted_default_mapping",
+      "rejected_with": "Macro state did not reach the USB report dispatcher"
+    },
+    {
+      "name": "corrupted_analog_axis",
+      "rejected_with": "Macro state did not reach the USB report dispatcher"
+    }
+  ],
+  "rejected_inputs_without_output": [
+    "wrong_firmware",
+    "wrong_updater"
+  ],
+  "source_sha256": {
+    "build_polymega_toggle.py": "aef01ecdcbd73a149793d60bca0e388129ce1aa3cc40ad71db6d62af36e15057",
+    "build_cz_swap.py": "b8318a19f78ea7b5806251c8f6053d136aaeed97f00d674dbd9790c8ddbb297e",
+    "tests/emu8051.hpp": "0772dbb3083d654874be5d3861337c6bb6096acfd3ac4712573b35956415c24b",
+    "tests/verify_polymega_toggle.cpp": "28ba1bac7e407349f42fd190b3d747d14d611f209dbbb4161612af1b25d95172",
+    "tests/run_validation.py": "4bfc0bacdcd262b3cf261de5119a1493240ba711babc87b46b053fb077dbe4f4",
+    "USE_AT_YOUR_OWN_RISK.txt": "c1b122e8cb884b2f29057a7e77b57fa0d0a7c709bb94900793b42c2bec161c36"
+  },
+  "limitations": [
+    "Report inputs start after stock radio parsing/calibration; those unchanged paths are not emulated.",
+    "PS3 template-copy and legacy nonvolatile-save routines are modeled, not hardware-emulated.",
+    "No radio, interrupt scheduling, USB host negotiation, bootloader, flash operation, or Polymega emulation.",
+    "hardware_tested describes this offline run only; user-reported device tests are recorded in docs/polymega-hardware-results.json."
+  ]
+}
