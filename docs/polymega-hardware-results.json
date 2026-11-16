@@ -4,7 +4,7 @@
   "controller": "Retro-Bit Saturn 2.4 GHz Wireless Pro",
   "connection": "V2 USB receiver on Polymega",
   "firmware_during_hardware_tests": "Initial mapping and NiGHTS analog tests used stock firmware. Later custom-firmware report is recorded separately below.",
-  "working_mode": "Original three-green-light USB mode",
+  "working_mode": "USB mode with two green lights on Polymega; three green lights on Mac (user correction, 2026-11-16)",
   "stock_mapping": {
     "A": "Saturn A",
     "B": "Saturn B",

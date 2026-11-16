@@ -41,7 +41,7 @@ The updater and PDF were downloaded from Retro-Bit; they are not an endorsement
 of this modified image. Keep the original stock download for possible recovery.
 
 USE
-Use your working three-green-light USB mode on Polymega. Hold Start + D-pad
+Use USB mode with two green lights on Polymega (three on Mac). Hold Start + D-pad
 Right, then release, to toggle the C/Z correction. Repeat to turn it off.
 Reconnecting the USB receiver resets to stock mapping. ZL/ZR remain Saturn L/R.
 For analog games, enable Analog in Polymega's in-game controller settings.

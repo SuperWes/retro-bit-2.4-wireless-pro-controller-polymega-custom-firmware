@@ -14,9 +14,9 @@ INSTALL (Windows 10/11, internet connection required)
    Keep the receiver connected until the updater finishes.
 
 USE
-Use the working three-green-light USB mode on Polymega. Hold Start + D-pad Right,
-then release, to toggle the C/Z correction. Repeat to turn it off. Reconnecting
-the USB receiver resets to stock mapping. ZL/ZR remain Saturn L/R.
+Use USB mode with two green lights on Polymega (three on Mac). Hold Start +
+D-pad Right, then release, to toggle the C/Z correction. Repeat to turn it off.
+Reconnecting the USB receiver resets to stock mapping. ZL/ZR remain Saturn L/R.
 For analog games, enable Analog in Polymega's in-game controller settings.
 
 One user reported successful installation and C/Z toggle operation on Polymega.
