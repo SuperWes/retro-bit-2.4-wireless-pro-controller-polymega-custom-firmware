@@ -38,6 +38,8 @@
     "scope": "One controller/receiver setup on Polymega; user report, not independent observation.",
     "successful_installation_reported": true,
     "start_right_cz_toggle_reported_working": true,
+    "resync_required_after_firmware_update": true,
+    "resync_source": "User confirmed on 2026-11-16 that the receiver must be re-synced with the controller after updating firmware.",
     "not_separately_confirmed": [
       "Every individual button on modified firmware",
       "Custom-firmware analog behavior",

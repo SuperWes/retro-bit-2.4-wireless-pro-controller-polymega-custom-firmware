@@ -12,12 +12,18 @@ INSTALL (Windows 10/11, internet connection required)
 3. Read the installation PDF in the new Firmware Package folder. Follow its
    receiver-update procedure, selecting the .bxw from Firmware Package\Firmware.
    Keep the receiver connected until the updater finishes.
+4. Re-sync (pair) the receiver with the controller after updating, before playing.
 
 USE
+Stock mapping on Polymega has C and Z reversed. This patch only toggles that
+swap; the rest of the stock mapping is preserved. Duplicate L/R buttons follow C/Z.
 Use USB mode with two green lights on Polymega (three on Mac). Hold Start +
-D-pad Right, then release, to toggle the C/Z correction. Repeat to turn it off.
+D-pad Right, then release, to swap C and Z. Repeat to restore stock mapping.
 Reconnecting the USB receiver resets to stock mapping. ZL/ZR remain Saturn L/R.
 For analog games, enable Analog in Polymega's in-game controller settings.
+
+The same receiver may help other USB hosts with reversed C/Z in XInput or PS3
+mode; those hosts are untested.
 
 One user reported successful installation and C/Z toggle operation on Polymega.
 Recovery after a failed flash remains untested. Vendor files are obtained

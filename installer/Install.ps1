@@ -37,14 +37,20 @@ INSTALL
 Read the included Retro-Bit installation PDF and follow its receiver-update
 procedure on Windows. In BxUsbUpdate.exe, select the .bxw in this package's
 Firmware folder. Keep the receiver connected until the update finishes.
+After updating, re-sync (pair) the receiver with the controller before playing.
 The updater and PDF were downloaded from Retro-Bit; they are not an endorsement
 of this modified image. Keep the original stock download for possible recovery.
 
 USE
+Stock mapping on Polymega has C and Z reversed. This patch only toggles that
+swap; the rest of the stock mapping is preserved. Duplicate L/R buttons follow C/Z.
 Use USB mode with two green lights on Polymega (three on Mac). Hold Start + D-pad
-Right, then release, to toggle the C/Z correction. Repeat to turn it off.
+Right, then release, to swap C and Z. Repeat to restore stock mapping.
 Reconnecting the USB receiver resets to stock mapping. ZL/ZR remain Saturn L/R.
 For analog games, enable Analog in Polymega's in-game controller settings.
+
+The same receiver may help other USB hosts with reversed C/Z in XInput or PS3
+mode; those hosts are untested.
 
 One user reported successful installation and C/Z toggle operation on Polymega.
 Recovery after a failed flash has not been tested.
@@ -150,6 +156,7 @@ try {
     Write-Host "Ready: $destination"
     Write-Host 'Read the included installation PDF before flashing.'
     Write-Host "In the updater, select Firmware\$FirmwareName."
+    Write-Host 'After updating, re-sync the receiver with the controller before playing.'
     if (-not $NoLaunch) {
         $program = Join-Path $destination 'Update Program/BxUsbUpdate.exe'
         Start-Process -FilePath $program -WorkingDirectory (Join-Path $destination 'Update Program')
