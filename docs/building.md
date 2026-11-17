@@ -27,14 +27,28 @@ Validation covers:
 The interpreter models PS3's unchanged template-copy helper and observes legacy settings-save calls without emulating their nonvolatile hardware. Inputs begin after stock radio parsing/calibration. Radio, interrupts, USB negotiation, flash, the complete MCU and Polymega are not emulated. See [implementation notes](implementation.md) for patch addresses and limits.
 
 
-## Windows installer package
+## Firmware release ZIP
 
-The public ZIP contains only `Install.cmd`, `Install.ps1`, and `README.txt`. The
+The recommended installation uses a Windows PC and Retro-Bit's official updater
+downloaded separately. Package a validated build with:
+
+```sh
+python3 tools/package_firmware_release.py --firmware build/validated-toggle/retrobit_usb_pro_1.1_polymega_toggle_EXPERIMENTAL.bxw --output build/retrobit-polymega.zip
+```
+
+The packager rejects any firmware whose size or SHA-256 differs from the checked-in
+validated manifest. The ZIP contains only the `.bxw` and `README.txt`; it includes
+no executable, script, vendor DLL, or vendor PDF. It contains modified vendor
+firmware; see [third-party files](third-party-files.md).
+
+## Earlier Windows preparation script
+
+Releases alpha.2 through alpha.4 used `Install.cmd`, `Install.ps1`, and `README.txt`. The
 PowerShell patch table is generated from the same 8051 extension as the Python
 builder. Its final output must match the tested firmware SHA-256 exactly.
 
 ```sh
-python3 tools/package_release.py --output build/retrobit-polymega.zip
+python3 tools/package_release.py --output build/legacy-preparation-script.zip
 ```
 
 The installer downloads the pinned official ZIP, checks the archive, firmware,
@@ -42,7 +56,9 @@ updater, decoded image, and final patched image hashes, and creates the vendor's
 `Firmware` and `Update Program` layout locally. It copies the vendor PDF unchanged
 and adds a short README. It opens the vendor updater but performs no flashing.
 
-`tests/test_windows_installer.py` tests the packaged script under Windows
+`tests/test_windows_installer.py` checks the new firmware ZIP against an independent
+build, reproducible packaging, rejection of altered firmware, and refusal to
+overwrite an existing ZIP. It also tests the earlier script under Windows
 PowerShell 5.1 without launching the updater. It checks the actual download path,
 byte-for-byte output, unchanged vendor files, and rejection of wrong ZIPs,
 corrupted patches, and existing output folders. Vendor files remain temporary

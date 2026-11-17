@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Exercise the shipped installer on Windows without launching the vendor updater."""
+"""Check firmware packaging and the legacy preparer without launching the updater."""
 import argparse
 import hashlib
 import io
@@ -66,6 +66,28 @@ def main():
             vendor_files = {n[len(prefix):]: vendor.read(n) for n in vendor.namelist()
                             if n.startswith(prefix) and not n.endswith('/')
                             and ('/Update Program/' in n or n.endswith('.pdf'))}
+
+        candidate = work/firmware.CANDIDATE_NAME
+        candidate.write_bytes(reference)
+        packager = [sys.executable, str(ROOT/'tools/package_firmware_release.py'),
+                    '--firmware', str(candidate)]
+        archives = [work/'firmware-a.zip', work/'firmware-b.zip']
+        for archive in archives:
+            subprocess.run(packager + ['--output', str(archive)], check=True)
+            with zipfile.ZipFile(archive) as packaged:
+                assert set(packaged.namelist()) == {firmware.CANDIDATE_NAME, 'README.txt'}
+                assert packaged.testzip() is None
+                assert packaged.read(firmware.CANDIDATE_NAME) == reference
+                assert b'A WINDOWS PC IS REQUIRED' in packaged.read('README.txt')
+        assert archives[0].read_bytes() == archives[1].read_bytes()
+        before = archives[0].read_bytes()
+        refused = subprocess.run(packager + ['--output', str(archives[0])], capture_output=True)
+        assert refused.returncode != 0 and archives[0].read_bytes() == before
+        candidate.write_bytes(bytes([reference[0] ^ 1]) + reference[1:])
+        rejected_zip = work/'wrong-firmware.zip'
+        refused = subprocess.run(packager + ['--output', str(rejected_zip)], capture_output=True)
+        assert refused.returncode != 0 and not rejected_zip.exists()
+        print('Firmware ZIP: exact image, minimal layout, reproducibility, and input/output guards passed')
 
         for name, source in [('actual download', None), ('local ZIP', official)]:
             destination = work/name

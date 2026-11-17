@@ -1,17 +1,22 @@
 # Third-party files
 
-The repository and release ZIP distribute project code and original documentation.
-They do not include stock or modified vendor firmware, the vendor updater or DLLs,
-or the vendor installation PDF.
+The source repository contains project code and original documentation. The
+firmware release ZIP, starting with alpha.5, contains a complete **modified
+Retro-Bit firmware image** and a short README. The image contains vendor code;
+it is not wholly original project code.
 
-The Windows installer obtains the [official USB Pro 1.1 ZIP directly from
-Retro-Bit](https://retro-bit.com/sitepad-data/uploads/2025/07/V2-USB-Receiver-Pro-Controller-1.1-Firmware-Switch-2-Compatibility.zip),
-verifies its exact hash, and prepares the modified firmware locally. It creates
-the familiar `Firmware` and `Update Program` folders on the user's computer.
+The vendor updater, DLLs, installation PDF, and unmodified firmware are not
+bundled. Users obtain those files in the [official USB Pro 1.1 ZIP directly from
+Retro-Bit](https://retro-bit.com/sitepad-data/uploads/2025/07/V2-USB-Receiver-Pro-Controller-1.1-Firmware-Switch-2-Compatibility.zip)
+and select the custom `.bxw` using that updater on a Windows PC.
 
-Permission to redistribute the vendor files has not been established. Do not
-attach the generated installation folder or a complete firmware image to issues,
-commits, or releases. The risk notice grants no rights to third-party material.
+**Permission to redistribute the vendor firmware has not been established.**
+Providing a modified image does not establish permission or grant rights to the
+underlying vendor code. The risk notice grants no rights to third-party material.
+
+Earlier releases alpha.2 through alpha.4 contain only project files. Their
+preparation script downloads the official package, verifies its exact hash,
+and creates the modified firmware locally.
 
 Retro-Bit, SEGA, and Polymega are compatibility references; this project is
 unofficial and is not endorsed by those companies.

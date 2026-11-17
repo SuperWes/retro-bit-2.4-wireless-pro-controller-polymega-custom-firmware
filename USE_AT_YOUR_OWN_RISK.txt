@@ -61,7 +61,8 @@ targets only. Permission to redistribute the vendor firmware has not been
 established. This risk notice grants no license or redistribution rights to
 third-party firmware or documentation and does not resolve that separate issue.
 
-The public distribution contains project code and original documentation, not
-vendor firmware, executables, DLLs, or manuals. The installer obtains the exact
-official package directly from Retro-Bit and modifies it locally. This does not
-grant permission to redistribute the resulting firmware or vendor files.
+The source repository contains project code and original documentation. Starting
+with alpha.5, the firmware release ZIP also contains a complete modified vendor
+firmware image. The official updater, DLLs, manual, and unmodified firmware are
+obtained separately from Retro-Bit. Providing the modified image does not
+establish permission or grant redistribution rights to the underlying vendor code.

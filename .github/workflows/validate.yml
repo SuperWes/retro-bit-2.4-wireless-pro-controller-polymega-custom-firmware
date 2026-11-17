@@ -1,4 +1,4 @@
-name: Validate Windows installer
+name: Validate firmware packages
 
 on:
   push:
@@ -15,7 +15,7 @@ jobs:
     timeout-minutes: 10
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
-      - name: Package project files only
+      - name: Package legacy preparation script for regression checks
         run: python tools/package_release.py --output build/installer.zip
-      - name: Test Windows PowerShell 5.1 installer without flashing
+      - name: Test firmware ZIP and legacy preparer without flashing
         run: python tests/test_windows_installer.py --package build/installer.zip

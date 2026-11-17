@@ -40,7 +40,7 @@
     "tests/emu8051.hpp": "0772dbb3083d654874be5d3861337c6bb6096acfd3ac4712573b35956415c24b",
     "tests/verify_polymega_toggle.cpp": "28ba1bac7e407349f42fd190b3d747d14d611f209dbbb4161612af1b25d95172",
     "tests/run_validation.py": "4bfc0bacdcd262b3cf261de5119a1493240ba711babc87b46b053fb077dbe4f4",
-    "USE_AT_YOUR_OWN_RISK.txt": "c1b122e8cb884b2f29057a7e77b57fa0d0a7c709bb94900793b42c2bec161c36"
+    "USE_AT_YOUR_OWN_RISK.txt": "94d9f839fc43fe5b50e64a257be5ef68211996edfb45098fcfa4c34ecdb9a3b2"
   },
   "limitations": [
     "Report inputs start after stock radio parsing/calibration; those unchanged paths are not emulated.",

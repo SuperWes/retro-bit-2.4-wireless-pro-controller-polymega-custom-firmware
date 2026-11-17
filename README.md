@@ -6,10 +6,14 @@ On Polymega, the stock mapping has **C and Z reversed**. This patch for the **Re
 
 ## Install
 
-1. [Download the installer ZIP](https://github.com/SuperWes/retro-bit-2.4-wireless-pro-controller-polymega-custom-firmware/releases/tag/v0.1.0-alpha.4) and extract it on Windows 10/11.
-2. Double-click **Install.cmd**. It downloads Retro-Bit's official package, applies the patch locally, and opens the updater. Internet access is required; no Python or compiler is needed.
-3. Follow the installation PDF in **Firmware Package**, selecting the `.bxw` in its **Firmware** folder. Wait for the update to finish before disconnecting.
+**You need a Windows PC to install the firmware.**
+
+1. [Download the custom firmware ZIP](https://github.com/SuperWes/retro-bit-2.4-wireless-pro-controller-polymega-custom-firmware/releases/tag/v0.1.0-alpha.5) and extract it.
+2. Download and fully extract [Retro-Bit's official V2 USB Pro 1.1 package](https://retro-bit.com/sitepad-data/uploads/2025/07/V2-USB-Receiver-Pro-Controller-1.1-Firmware-Switch-2-Compatibility.zip). It contains the official Windows updater and installation PDF.
+3. Follow that PDF and run **BxUsbUpdate.exe** from its **Update Program** folder, keeping its DLLs alongside it. When choosing firmware, select **retrobit_usb_pro_1.1_polymega_toggle_EXPERIMENTAL.bxw** from this project's ZIP in place of the official `.bxw`. Wait for the update to finish before disconnecting.
 4. **Re-sync (pair) the receiver with the controller after updating**, before playing.
+
+The custom ZIP contains the ready-made firmware and a short README. No project installer, Python, or compiler is needed. Using the official updater does not remove the risks of flashing unofficial firmware.
 
 ## Use
 
