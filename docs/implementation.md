@@ -123,12 +123,8 @@ The earlier C/Z-only image was reported installed and working in a fighting game
 on one Polymega setup. It did not fix every game. On November 16, 2026, the author
 then reported testing both
 Street Fighter and SEGA layouts on their receiver with Polymega, saying both
-work great. Version 1.0 promotes that alpha.6 firmware without changing any
-firmware bytes. This confirms one user's setup, not every host or game.
+work great. This confirms one user's setup, not every host or game.
 Static updater inspection found application writes in
 32-byte packets with updater-created checksums; no separate file signature was
 identified in that path. Neither that analysis nor preserved boot bytes establishes
 safe flashing or recovery. See the [hardware observations](polymega-hardware-results.json).
-
-Version 1.0 packages the image as `retrobit_usb_pro_1.1_polymega.bxw`. The shorter
-filename and updated documentation do not change the image SHA-256 or behavior.

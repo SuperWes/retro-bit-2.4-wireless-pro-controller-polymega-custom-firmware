@@ -1,7 +1,7 @@
 # Third-party files
 
 The source repository contains project code and original documentation. The
-firmware release ZIP, starting with alpha.5, contains a complete **modified
+firmware release ZIP contains a complete **modified
 Retro-Bit firmware image** and a short README. The image contains vendor code;
 it is not wholly original project code.
 
@@ -13,10 +13,6 @@ and select the custom `.bxw` using that updater on a Windows PC.
 **Permission to redistribute the vendor firmware has not been established.**
 Providing a modified image does not establish permission or grant rights to the
 underlying vendor code. The risk notice grants no rights to third-party material.
-
-Earlier releases alpha.2 through alpha.4 contain only project files. Their
-preparation script downloads the official package, verifies its exact hash,
-and creates the modified firmware locally.
 
 Retro-Bit, SEGA, and Polymega are compatibility references; this project is
 unofficial and is not endorsed by those companies.

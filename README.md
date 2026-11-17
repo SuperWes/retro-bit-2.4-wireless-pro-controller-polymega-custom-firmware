@@ -2,7 +2,7 @@
 
 Two optional button layouts for the **Retro-Bit V2 USB receiver** and Saturn 2.4 GHz Wireless Pro controller. Stock remains the default.
 
-**Version 1.0:** Both Street Fighter and SEGA layouts have been tested and reported working on the author's receiver with Polymega. The firmware bytes are identical to alpha.6, so **alpha.6 users do not need to flash again**.
+**Version 1.0:** Both Street Fighter and SEGA layouts have been tested and reported working on the author's receiver with Polymega.
 
 > **USE AT YOUR OWN RISK.** Unofficial firmware, supplied AS IS without warranty. Flashing can brick the receiver; recovery is not guaranteed. **V2 USB receiver only**—never the controller or Saturn-port receiver. [Full notice](USE_AT_YOUR_OWN_RISK.txt).
 

@@ -22,7 +22,6 @@ identify the hardware, do not flash it.
 WHAT HAS AND HAS NOT BEEN VALIDATED
 On November 16, 2026, the author reported testing both Street Fighter and SEGA
 layouts on their V2 USB receiver with Polymega and said both work great.
-Version 1.0 contains exactly the same firmware bytes as that alpha.6 build.
 This is a successful user report on one setup, not a guarantee for every
 receiver, host, or game and not a recovery test.
 
@@ -63,8 +62,8 @@ targets only. Permission to redistribute the vendor firmware has not been
 established. This risk notice grants no license or redistribution rights to
 third-party firmware or documentation and does not resolve that separate issue.
 
-The source repository contains project code and original documentation. Starting
-with alpha.5, the firmware release ZIP also contains a complete modified vendor
-firmware image. The official updater, DLLs, manual, and unmodified firmware are
+The source repository contains project code and original documentation. The
+firmware release ZIP contains a complete modified vendor firmware image.
+The official updater, DLLs, manual, and unmodified firmware are
 obtained separately from Retro-Bit. Providing the modified image does not
 establish permission or grant redistribution rights to the underlying vendor code.

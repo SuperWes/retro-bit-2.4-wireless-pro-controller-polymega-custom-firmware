@@ -41,9 +41,9 @@ validated manifest. The ZIP contains only the `.bxw` and `README.txt`; it includ
 no executable, script, vendor DLL, or vendor PDF. It contains modified vendor
 firmware; see [third-party files](third-party-files.md).
 
-## Earlier Windows preparation script
+## Optional Windows preparation script
 
-Releases alpha.2 through alpha.4 used `Install.cmd`, `Install.ps1`, and `README.txt`. The
+The preparation script uses `Install.cmd`, `Install.ps1`, and `README.txt`. Its
 PowerShell patch table is generated from the same 8051 extension as the Python
 builder. Its final output must match the tested firmware SHA-256 exactly.
 
@@ -67,7 +67,6 @@ test inputs and are never uploaded as CI artifacts.
 The root `build_cz_swap.py` is the earlier four-byte prototype and provides shared
 helpers to the toggle builder. The current installer always uses the toggle.
 
-Version 1.0 has the same firmware bytes as alpha.6; only the packaged firmware
-filename and documentation changed. The automated record's `hardware_tested: false`
+The automated record's `hardware_tested: false`
 describes the offline test run. The author's successful physical tests of both
 layouts are recorded separately in [hardware results](polymega-hardware-results.json).
