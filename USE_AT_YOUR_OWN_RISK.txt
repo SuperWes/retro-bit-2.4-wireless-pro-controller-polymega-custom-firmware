@@ -1,17 +1,16 @@
-USE AT YOUR OWN RISK - EXPERIMENTAL, UNOFFICIAL FIRMWARE
-=====================================================
+USE AT YOUR OWN RISK - UNOFFICIAL CUSTOM FIRMWARE
+===============================================
 
 Flashing this firmware can permanently disable (brick) your USB receiver.
 Installing it on the wrong device can also disable that device. Do not proceed
 unless you accept the possibility of losing the hardware and paying for its
 repair or replacement.
 
-PROJECT RECOMMENDATION
-Keep using stock firmware for normal use. Do not flash your only or irreplaceable
-receiver on the assumption that you can simply reinstall stock firmware later.
-Hardware testing should begin with a spare receiver and an independently
-verified recovery method; no such recovery has been demonstrated for this
-custom image. Using the receiver only on Polymega does not reduce flashing risk.
+BEFORE FLASHING
+Do not flash your only or irreplaceable receiver on the assumption that you
+can simply reinstall stock firmware later. No recovery after a failed flash
+has been demonstrated for this custom image. Using the receiver only on
+Polymega does not reduce flashing risk.
 
 HARDWARE TARGET
 These custom images are intended ONLY for the Retro-Bit V2 USB receiver used
@@ -21,17 +20,18 @@ a V1 receiver, or another hardware model or revision. If you cannot positively
 identify the hardware, do not flash it.
 
 WHAT HAS AND HAS NOT BEEN VALIDATED
-One user reported successful installation and C/Z toggle operation with the
-earlier alpha.1-alpha.5 firmware in a fighting-game test on November 16, 2026.
-That layout did not correct every game. Alpha.6 adds a SEGA preset; this new
-image has NOT yet been flashed or tested on hardware. The earlier report is
-not evidence that the new image will install or work, nor a recovery test. Automated
-checks cover reproducible builds, file integrity, selected 8051 instructions
-and simulated USB reports. Passing checks, matching hashes and
-preserving boot-region bytes do NOT establish that flashing is safe or that
-the device will boot, pair, or function correctly afterward. The earlier
-NiGHTS analog test used stock firmware; the later custom-firmware report did
-not separately itemize analog, every button, or receiver power-cycle behavior.
+On November 16, 2026, the author reported testing both Street Fighter and SEGA
+layouts on their V2 USB receiver with Polymega and said both work great.
+Version 1.0 contains exactly the same firmware bytes as that alpha.6 build.
+This is a successful user report on one setup, not a guarantee for every
+receiver, host, or game and not a recovery test.
+
+Automated checks cover reproducible builds, file integrity, selected 8051
+instructions and simulated USB reports. Passing checks, matching hashes and
+preserving boot-region bytes do NOT establish that every update will be safe
+or that a receiver can be recovered. The earlier NiGHTS analog test used stock
+firmware; the custom-firmware reports did not separately itemize analog,
+every individual button, or receiver power-cycle behavior.
 
 RECOVERY IS NOT GUARANTEED
 Keep the official stock firmware and vendor update instructions available.

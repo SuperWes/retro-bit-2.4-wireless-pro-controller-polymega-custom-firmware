@@ -51,12 +51,12 @@
     "wrong_updater"
   ],
   "source_sha256": {
-    "build_polymega_toggle.py": "4e71284c4ff288d22e7f68e4990586097c6b12482a72cc30810e7c33d0404ac5",
+    "build_polymega_toggle.py": "68db0b979e223d0b2ae2f4943a94d3e9869868547d5f38e100f45de6cbe943c3",
     "build_cz_swap.py": "b8318a19f78ea7b5806251c8f6053d136aaeed97f00d674dbd9790c8ddbb297e",
     "tests/emu8051.hpp": "0772dbb3083d654874be5d3861337c6bb6096acfd3ac4712573b35956415c24b",
     "tests/verify_polymega_toggle.cpp": "b7d7403ca3e190c84ebf8916f5a3f2210cf592ef1688a36d5cd12354f32a1d22",
     "tests/run_validation.py": "2851dbcc5e59b80c51f3c6493d1003150d85394c4a91859b034a0d94c4f7988a",
-    "USE_AT_YOUR_OWN_RISK.txt": "564fe851a136406d66a56f4fe80301754c1fb11c4aee241f3c0ea84c7fb2a4c9"
+    "USE_AT_YOUR_OWN_RISK.txt": "bf53d0544862f12e8daf6b051cf86039eaeba7fe1f3737a2da76d88dc88544ec"
   },
   "limitations": [
     "Report inputs start after stock radio parsing/calibration; those unchanged paths are not emulated.",

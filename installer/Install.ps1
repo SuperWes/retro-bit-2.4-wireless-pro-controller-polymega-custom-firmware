@@ -15,7 +15,7 @@ $StockHash = '12c69fc5ebd2e76e40394428960548b79fe44e5a69d728691a8ad52b478bd55a'
 $UpdaterHash = '27f11a4bb3becc5426025025fe376d45f9b6da54f41a347750466f069592b4d7'
 $DecodedHash = '996a4eaed2ea0fd570b4960e6a1d85d15f0a0f1e747d63173e3e179d0158df76'
 $FirmwareHash = '951904f60c5730deaeb92db09039a9c594e2c70e9d8e34b3c14bcbf103dcea54'
-$FirmwareName = 'retrobit_usb_pro_1.1_polymega_toggle_EXPERIMENTAL.bxw'
+$FirmwareName = 'retrobit_usb_pro_1.1_polymega.bxw'
 $ArchiveRoot = 'V2 USB Receiver - Pro Controller - 1.1 Firmware - Switch 2 Compatibility/V2 USB Receiver - SEGA Controller - 1.0 Firmware/'
 $InstructionsName = 'Retro-Bit V2 USB Receiver for Pro Controllers - Firmware Installation.pdf'
 $UpdaterFiles = @('BxUpdateLib.dll', 'BxUsbUpdate.exe', 'hidapi.dll', 'ucrtbased.dll', 'vcruntime140d.dll', 'wolfssl.dll')
@@ -28,7 +28,7 @@ $PatchTableJson = @'
 $FirmwareReadme = @'
 Retro-Bit Saturn Pro on Polymega
 
-USE AT YOUR OWN RISK. Unofficial, experimental firmware; supplied AS IS without
+USE AT YOUR OWN RISK. Unofficial firmware; supplied AS IS without
 warranty or promised repair/replacement. Flashing can brick the receiver;
 recovery is not guaranteed. V2 USB RECEIVER ONLY, never the controller itself,
 Saturn-port receiver, or V1 receiver.
@@ -53,13 +53,13 @@ Duplicate shoulder L/R follow C/Z. For analog games, enable Analog in
 Polymega's own in-game controller settings.
 
 SEGA layout targets games whose A/B/C actions fall on physical X/A/B.
-These are manual presets; the receiver does not identify games. Other hosts,
-including Evercade, are untested.
+These are manual presets; the receiver does not identify games. These custom
+presets have not been separately confirmed on other hosts.
 
-Alpha.6 adds SEGA layout and passes offline checks, but this new firmware has
-not yet been tested on a receiver. The earlier C/Z-only firmware was reported
-working in a fighting-game test on one Polymega setup. It did not fix every
-game. Recovery after a failed flash remains untested.
+Version 1.0 uses the same firmware bytes as alpha.6. Both layouts were tested
+and reported working on the author's receiver with Polymega on November 16,
+2026. If alpha.6 is already installed, no new flash is needed. This is one
+setup's result; recovery after a failed flash remains untested.
 
 Project, full risk notice, and technical details:
 https://github.com/SuperWes/retro-bit-2.4-wireless-pro-controller-polymega-custom-firmware

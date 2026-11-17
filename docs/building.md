@@ -22,7 +22,7 @@ Validation covers:
 - 884,736 stock/candidate report comparisons: all 8,192 relevant digital input combinations, nine D-pad states, two PC profiles, all three presets and the existing face-button-flip option off/on.
 - 1,277,952 independent analog-report checks in total, including 393,216 reports covering every left-stick X/Y pair in both profiles and all three presets.
 - Actual macro and report-dispatch instructions: both shortcuts, every preset transition, hold threshold, repeat prevention, release/rearming, interrupted holds, diagonal rejection, stock legacy shortcuts, no nonvolatile save for either PC shortcut and reset to stock at receiver startup.
-- Deliberately broken images rejected for a missing shortcuts, missing report hooks, missing SEGA processing (including the stock face-button-flip option), inverted default behavior and corrupted analog conversion.
+- Deliberately broken images rejected for missing shortcuts, missing report hooks, missing SEGA processing (including the stock face-button-flip option), inverted default behavior and corrupted analog conversion.
 
 The interpreter models PS3's unchanged template-copy helper and observes legacy settings-save calls without emulating their nonvolatile hardware. Inputs begin after stock radio parsing/calibration. Radio, interrupts, USB negotiation, flash, the complete MCU and Polymega are not emulated. See [implementation notes](implementation.md) for patch addresses and limits.
 
@@ -33,7 +33,7 @@ The recommended installation uses a Windows PC and Retro-Bit's official updater
 downloaded separately. Package a validated build with:
 
 ```sh
-python3 tools/package_firmware_release.py --firmware build/validated-toggle/retrobit_usb_pro_1.1_polymega_toggle_EXPERIMENTAL.bxw --output build/retrobit-polymega.zip
+python3 tools/package_firmware_release.py --firmware build/validated-toggle/retrobit_usb_pro_1.1_polymega.bxw --output build/retrobit-polymega.zip
 ```
 
 The packager rejects any firmware whose size or SHA-256 differs from the checked-in
@@ -66,3 +66,8 @@ test inputs and are never uploaded as CI artifacts.
 
 The root `build_cz_swap.py` is the earlier four-byte prototype and provides shared
 helpers to the toggle builder. The current installer always uses the toggle.
+
+Version 1.0 has the same firmware bytes as alpha.6; only the packaged firmware
+filename and documentation changed. The automated record's `hardware_tested: false`
+describes the offline test run. The author's successful physical tests of both
+layouts are recorded separately in [hardware results](polymega-hardware-results.json).

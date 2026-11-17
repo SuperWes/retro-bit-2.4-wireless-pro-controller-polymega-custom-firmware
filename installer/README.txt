@@ -1,6 +1,6 @@
 Retro-Bit Saturn Pro on Polymega
 
-USE AT YOUR OWN RISK. Unofficial, experimental firmware; supplied AS IS without
+USE AT YOUR OWN RISK. Unofficial firmware; supplied AS IS without
 warranty or promised repair/replacement. Flashing can brick your receiver;
 recovery is not guaranteed. V2 USB RECEIVER ONLY, never the controller itself,
 Saturn-port receiver, or V1 receiver.
@@ -26,13 +26,13 @@ Duplicate shoulder L/R follow C/Z. For analog games, enable Analog in
 Polymega's own in-game controller settings.
 
 SEGA layout targets games whose A/B/C actions fall on physical X/A/B.
-These are manual presets; the receiver does not identify games. Other hosts,
-including Evercade, are untested.
+These are manual presets; the receiver does not identify games. These custom
+presets have not been separately confirmed on other hosts.
 
-Alpha.6 adds SEGA layout and passes offline checks, but this new firmware has
-not yet been tested on a receiver. The earlier C/Z-only firmware was reported
-working in a fighting-game test on one Polymega setup. It did not fix every
-game. Recovery after a failed flash remains untested.
+Version 1.0 uses the same firmware bytes as alpha.6. Both layouts were tested
+and reported working on the author's receiver with Polymega on November 16,
+2026. If alpha.6 is already installed, no new flash is needed. This is one
+setup's result; recovery after a failed flash remains untested.
 
 Project, full risk notice, and technical details:
 https://github.com/SuperWes/retro-bit-2.4-wireless-pro-controller-polymega-custom-firmware

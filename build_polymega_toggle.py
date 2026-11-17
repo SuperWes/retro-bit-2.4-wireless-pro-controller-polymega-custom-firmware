@@ -3,7 +3,7 @@
 
 No USB access, flashing, controller patch, or host configuration is performed.
 The stock report builders and their analog conversions remain intact.
-USE AT YOUR OWN RISK: flashing the experimental output can permanently brick
+USE AT YOUR OWN RISK: flashing the unofficial output can permanently brick
 the V2 USB receiver. No warranty or recovery guarantee. Hardware reports are recorded separately.
 """
 import argparse
@@ -15,7 +15,7 @@ from build_cz_swap import check, digest, write_new
 
 CODE_START = 0x6000
 STATE = 0x85FF
-CANDIDATE_NAME = 'retrobit_usb_pro_1.1_polymega_toggle_EXPERIMENTAL.bxw'
+CANDIDATE_NAME = 'retrobit_usb_pro_1.1_polymega.bxw'
 
 
 class Program:
@@ -260,7 +260,7 @@ def build(stock, updater):
         check(original[start:end] == modified[start:end], 'Stock report/parser code changed')
     manifest = {
         'risk_notice': 'USE_AT_YOUR_OWN_RISK.txt',
-        'status': 'EXPERIMENTAL; built offline; see docs/polymega-hardware-results.json for user-reported hardware tests',
+        'status': 'UNOFFICIAL; built offline; see docs/polymega-hardware-results.json for user-reported hardware tests',
         'target': 'Retro-Bit V2 USB receiver for Saturn 2.4 GHz Wireless Pro',
         'base_source_url': SOURCE_URL,
         'base_sha256': STOCK_SHA, 'updater_sha256': UPDATER_SHA,

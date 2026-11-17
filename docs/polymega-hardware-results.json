@@ -3,7 +3,7 @@
   "source": "User's direct hardware tests reported in this conversation",
   "controller": "Retro-Bit Saturn 2.4 GHz Wireless Pro",
   "connection": "V2 USB receiver on Polymega",
-  "firmware_during_hardware_tests": "Initial mapping and NiGHTS analog tests used stock firmware. Later custom-firmware report is recorded separately below.",
+  "firmware_during_hardware_tests": "Initial mapping and NiGHTS analog tests used stock firmware. Earlier C/Z-only and later two-preset custom-firmware reports are recorded separately below.",
   "working_mode": "USB mode with two green lights on Polymega; three green lights on Mac (user correction, 2026-11-16)",
   "saturn_analog": {
     "game": "NiGHTS into Dreams",
@@ -21,7 +21,7 @@
     "release": "v0.1.0-alpha.1",
     "candidate_sha256": "b3f78325ae7de66e7f416fc9f55a4b191a507c2025790d8caa64157aebc5e935",
     "source": "User reported successful installation and operation, describing Start+Right as toggling Z and C, then confirmed it works.",
-    "scope": "Earlier C/Z-only image on one controller/receiver setup, tested in a fighting game; user report, not independent observation. Does not validate alpha.6 or every game.",
+    "scope": "Earlier C/Z-only image on one controller/receiver setup; user report, not independent observation. The later confirmation of both layouts is recorded under current_candidate.",
     "successful_installation_reported": true,
     "start_right_cz_toggle_reported_working": true,
     "resync_required_after_firmware_update": true,
@@ -35,7 +35,7 @@
     "failed_flash_recovery_verified": false
   },
   "original_fighting_game_observation": {
-    "game": "Fighting game; exact title not supplied",
+    "game": "X-Men vs. Street Fighter",
     "mapping_inferred_from_game_actions": {
       "A": "Saturn A",
       "B": "Saturn B",
@@ -50,7 +50,8 @@
       "left_stick_click": "No action observed",
       "right_stick_click": "No action observed"
     },
-    "limitation": "Originally presented as universal Saturn mapping; corrected after Nanatsu Kaze behaved differently. Not a raw capture of emulated Saturn inputs."
+    "limitation": "Originally presented as universal Saturn mapping; corrected after Nanatsu Kaze behaved differently. Not a raw capture of emulated Saturn inputs.",
+    "test_method": "User identified the game's button-remapping screen as the original way to check each physical button."
   },
   "sega_layout_request": {
     "game": "Nanatsu Kaze no Shima Monogatari",
@@ -66,19 +67,35 @@
     "requested_change": "Move X/A/B actions to A/B/C, and C action to X, relative to Street Fighter layout",
     "name": "SEGA layout; not a game-specific Nanatsu preset",
     "intended_use": "Three-button SEGA layout adapted by a host to a four-face-button controller",
-    "other_hosts": "User expects similar use on Evercade; no hardware test recorded",
+    "other_hosts": "User also tested the controller on Evercade and found similar mapping issues, which could be addressed with Evercade's button remapping. The firmware version used there was not specified; this is not a confirmation of both custom presets on Evercade.",
     "host_mechanism": "User suggested genre/database overrides. The exact mechanism has not been independently established; game-action observations alone do not prove it."
   },
   "current_candidate": {
-    "release": "v0.1.0-alpha.6",
+    "release": "v1.0.0",
     "sha256": "951904f60c5730deaeb92db09039a9c594e2c70e9d8e34b3c14bcbf103dcea54",
     "presets": [
       "Stock (startup default)",
       "Street Fighter (Start+Right)",
       "SEGA (Start+Up)"
     ],
-    "flashed": false,
-    "hardware_tested": false,
-    "status": "Offline validation only; pending receiver and game tests"
+    "flashed": true,
+    "hardware_tested": true,
+    "status": "Both Street Fighter and SEGA layouts reported working on the author's receiver with Polymega; promoted unchanged to version 1.0.",
+    "same_firmware_as": "v0.1.0-alpha.6",
+    "hardware_report": {
+      "date": "2026-11-16",
+      "source": "User confirmation in this conversation after the alpha.6 release",
+      "quote": "I did test both of these layouts on my receiver and they work great.",
+      "street_fighter_layout": "Reported working",
+      "sega_layout": "Reported working",
+      "scope": "One receiver/controller setup with Polymega; user-reported test, not an independent device inspection.",
+      "not_separately_itemized": [
+        "Every individual button",
+        "Custom-firmware analog behavior",
+        "Receiver power-cycle reset",
+        "Hold timing"
+      ],
+      "failed_flash_recovery_verified": false
+    }
   }
 }

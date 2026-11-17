@@ -1,6 +1,6 @@
 {
   "risk_notice": "USE_AT_YOUR_OWN_RISK.txt",
-  "status": "EXPERIMENTAL; built offline; see docs/polymega-hardware-results.json for user-reported hardware tests",
+  "status": "UNOFFICIAL; built offline; see docs/polymega-hardware-results.json for user-reported hardware tests",
   "target": "Retro-Bit V2 USB receiver for Saturn 2.4 GHz Wireless Pro",
   "base_source_url": "https://retro-bit.com/sitepad-data/uploads/2025/07/V2-USB-Receiver-Pro-Controller-1.1-Firmware-Switch-2-Compatibility.zip",
   "base_sha256": "12c69fc5ebd2e76e40394428960548b79fe44e5a69d728691a8ad52b478bd55a",
