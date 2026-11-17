@@ -5,20 +5,6 @@
   "connection": "V2 USB receiver on Polymega",
   "firmware_during_hardware_tests": "Initial mapping and NiGHTS analog tests used stock firmware. Later custom-firmware report is recorded separately below.",
   "working_mode": "USB mode with two green lights on Polymega; three green lights on Mac (user correction, 2026-11-16)",
-  "stock_mapping": {
-    "A": "Saturn A",
-    "B": "Saturn B",
-    "C": "Saturn Z",
-    "X": "Saturn X",
-    "Y": "Saturn Y",
-    "Z": "Saturn C",
-    "L": "Saturn Z",
-    "R": "Saturn C",
-    "ZL": "Saturn L",
-    "ZR": "Saturn R",
-    "left_stick_click": "No action observed",
-    "right_stick_click": "No action observed"
-  },
   "saturn_analog": {
     "game": "NiGHTS into Dreams",
     "polymega_in_game_analog_setting": "ON",
@@ -35,7 +21,7 @@
     "release": "v0.1.0-alpha.1",
     "candidate_sha256": "b3f78325ae7de66e7f416fc9f55a4b191a507c2025790d8caa64157aebc5e935",
     "source": "User reported successful installation and operation, describing Start+Right as toggling Z and C, then confirmed it works.",
-    "scope": "One controller/receiver setup on Polymega; user report, not independent observation.",
+    "scope": "Earlier C/Z-only image on one controller/receiver setup, tested in a fighting game; user report, not independent observation. Does not validate alpha.6 or every game.",
     "successful_installation_reported": true,
     "start_right_cz_toggle_reported_working": true,
     "resync_required_after_firmware_update": true,
@@ -47,5 +33,52 @@
       "Held-chord timing and repeat prevention"
     ],
     "failed_flash_recovery_verified": false
+  },
+  "original_fighting_game_observation": {
+    "game": "Fighting game; exact title not supplied",
+    "mapping_inferred_from_game_actions": {
+      "A": "Saturn A",
+      "B": "Saturn B",
+      "C": "Saturn Z",
+      "X": "Saturn X",
+      "Y": "Saturn Y",
+      "Z": "Saturn C",
+      "L": "Saturn Z",
+      "R": "Saturn C",
+      "ZL": "Saturn L",
+      "ZR": "Saturn R",
+      "left_stick_click": "No action observed",
+      "right_stick_click": "No action observed"
+    },
+    "limitation": "Originally presented as universal Saturn mapping; corrected after Nanatsu Kaze behaved differently. Not a raw capture of emulated Saturn inputs."
+  },
+  "sega_layout_request": {
+    "game": "Nanatsu Kaze no Shima Monogatari",
+    "firmware_sha256_during_observation": "b3f78325ae7de66e7f416fc9f55a4b191a507c2025790d8caa64157aebc5e935",
+    "active_preset": "Street Fighter (Start+Right C/Z swap enabled)",
+    "observations": {
+      "physical X": "Game A action",
+      "physical A": "Game B action",
+      "physical B": "Game C action",
+      "physical C": "Action requested on physical X",
+      "physical Y/Z/ZL/ZR": "Already correct; requested unchanged"
+    },
+    "requested_change": "Move X/A/B actions to A/B/C, and C action to X, relative to Street Fighter layout",
+    "name": "SEGA layout; not a game-specific Nanatsu preset",
+    "intended_use": "Three-button SEGA layout adapted by a host to a four-face-button controller",
+    "other_hosts": "User expects similar use on Evercade; no hardware test recorded",
+    "host_mechanism": "User suggested genre/database overrides. The exact mechanism has not been independently established; game-action observations alone do not prove it."
+  },
+  "current_candidate": {
+    "release": "v0.1.0-alpha.6",
+    "sha256": "951904f60c5730deaeb92db09039a9c594e2c70e9d8e34b3c14bcbf103dcea54",
+    "presets": [
+      "Stock (startup default)",
+      "Street Fighter (Start+Right)",
+      "SEGA (Start+Up)"
+    ],
+    "flashed": false,
+    "hardware_tested": false,
+    "status": "Offline validation only; pending receiver and game tests"
   }
 }

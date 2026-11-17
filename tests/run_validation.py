@@ -68,6 +68,17 @@ def main():
             broken = bytearray(candidate)
             broken[offset:offset+3] = original[offset:offset+3]
             controls.append(reject_image(name, broken, 'Macro state did not reach'))
+        for name, offset in [('missing_start_up_hook', 0x26e1)]:
+            broken = bytearray(candidate)
+            broken[offset:offset+3] = original[offset:offset+3]
+            controls.append(reject_image(name, broken, 'Start+Up failed'))
+        # Remove only the new SEGA processing; the old Street Fighter preset still works.
+        _, _, symbols = firmware.extension()
+        for label in ['xinput_sega', 'xinput_sega_flipped', 'ps3_sega']:
+            broken = bytearray(candidate)
+            broken[symbols[label]] = 0x22  # RET instead of postprocessing.
+            message = 'Physical button layout mismatch' if label.endswith('flipped') else 'Macro state did not reach'
+            controls.append(reject_image('missing_' + label, broken, message))
         # Invert the new XInput state test: disabled now swaps and enabled does not.
         _, _, symbols = firmware.extension()
         broken = bytearray(candidate)

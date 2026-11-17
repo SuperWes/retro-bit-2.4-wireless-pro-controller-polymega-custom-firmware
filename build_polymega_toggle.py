@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Build a volatile Start+Right toggle for the exact USB receiver Pro 1.1 image.
+"""Build volatile Street Fighter and SEGA layout shortcuts for the exact USB receiver Pro 1.1 image.
 
 No USB access, flashing, controller patch, or host configuration is performed.
 The stock report builders and their analog conversions remain intact.
@@ -64,7 +64,7 @@ class Program:
                 self.code[offset] = delta & 255
         listing = [
             '; Generated from build_polymega_toggle.py; addresses are decoded ROM offsets.',
-            '; Existing Start+Right detection/hold timing enters toggle via LJMP at 0x26b6.',
+            '; Stock Start+Right/Up hold detection enters hooks at 0x26b6/0x26e1.',
             '; State 0x85ff is volatile and cleared by the stock 0x8000..0x8fff startup loop.',
             '; Analog axes/triggers use the unchanged stock report builders.',
         ]
@@ -76,37 +76,63 @@ class Program:
 
 def extension():
     p = Program()
-    p.label('toggle')
-    p.address(0x90, 'mov dptr,#', 0x8542)
-    p.emit('movx a,@dptr', 0xe0)
-    p.branch(0xb4, 'cjne', 'check_xinput', 2)
-    p.branch(0x80, 'sjmp', 'toggle_pc')
-    p.label('check_xinput')
-    p.branch(0xb4, 'cjne', 'legacy_shortcut', 3)
-    p.label('toggle_pc')
-    # Require Right without another D-pad direction. The original detector has
-    # already required Start and the full long-press interval.
-    p.address(0x90, 'mov dptr,#', 0x8527)
-    p.emit('movx a,@dptr', 0xe0)
-    p.emit('anl a,#0xf0', 0x54, 0xf0)
-    p.branch(0xb4, 'cjne', 'resume_macro', 0x20)
-    p.address(0x90, 'mov dptr,#', STATE)
-    p.emit('movx a,@dptr', 0xe0)
-    p.emit('xrl a,#0x01', 0x64, 1)
-    p.emit('movx @dptr,a', 0xf0)
-    p.label('resume_macro')
-    # Skip 0x2798/0x3c98, which persist the legacy layout to nonvolatile storage.
-    # Release of the chord causes the ordinary input/report refresh.
-    p.address(0x02, 'ljmp', 0x26c1)
-    p.label('legacy_shortcut')
-    p.emit('mov 0x51,#0x04', 0x75, 0x51, 4)
-    p.address(0x02, 'ljmp', 0x26b9)
+    # Two exclusive presets. Selecting the active one returns to stock; selecting
+    # the other replaces it. The stock hold detector handles timing and rearming.
+    for name, state, direction, legacy, resume in [
+        ('toggle', 1, 0x20, 4, 0x26c1),
+        ('toggle_sega', 2, 0x40, 2, 0x26ec),
+    ]:
+        p.label(name)
+        p.address(0x90, 'mov dptr,#', 0x8542)
+        p.emit('movx a,@dptr', 0xe0)
+        p.branch(0xb4, 'cjne', name+'_check_xinput', 2)
+        p.branch(0x80, 'sjmp', name+'_pc')
+        p.label(name+'_check_xinput')
+        p.branch(0xb4, 'cjne', name+'_legacy', 3)
+        p.label(name+'_pc')
+        p.address(0x90, 'mov dptr,#', 0x8527)
+        p.emit('movx a,@dptr', 0xe0)
+        p.emit('anl a,#0xf0', 0x54, 0xf0)
+        p.branch(0xb4, 'cjne', name+'_resume', direction)
+        p.address(0x90, 'mov dptr,#', STATE)
+        p.emit('movx a,@dptr', 0xe0)
+        p.branch(0xb4, 'cjne', name+'_select', state)
+        p.emit('clr a', 0xe4)
+        p.branch(0x80, 'sjmp', name+'_store')
+        p.label(name+'_select')
+        p.emit(f'mov a,#{state}', 0x74, state)
+        p.label(name+'_store')
+        p.emit('movx @dptr,a', 0xf0)
+        p.label(name+'_resume')
+        p.address(0x02, 'ljmp', resume)  # Skip the legacy nonvolatile save.
+        p.label(name+'_legacy')
+        p.emit(f'mov 0x51,#{legacy}', 0x75, 0x51, legacy)
+        p.address(0x02, 'ljmp', 0x26b9 if state == 1 else 0x26e4)
+
+    def permute_byte(name, moves):
+        # Snapshot the stock byte before changing any bit: simultaneous presses
+        # and releases must survive the whole permutation, with no aliasing.
+        p.address(0x90, 'mov dptr,#', 0x8433)
+        p.emit('movx a,@dptr', 0xe0)
+        p.emit('mov r7,a', 0xff)
+        mask = 255 ^ sum(1 << source for source, _ in moves)
+        p.emit(f'anl a,#0x{mask:02x}', 0x54, mask)
+        p.emit('mov r6,a', 0xfe)
+        for source, target in moves:
+            p.emit('mov a,r7', 0xef)
+            p.emit(f'anl a,#0x{1 << source:02x}', 0x54, 1 << source)
+            p.branch(0x60, 'jz', f'{name}_skip_{source}')
+            p.emit(f'orl 0x06,#0x{1 << target:02x}', 0x43, 0x06, 1 << target)
+            p.label(f'{name}_skip_{source}')
+        p.emit('mov a,r6', 0xee)
+        p.emit('movx @dptr,a', 0xf0)
 
     p.label('xinput_report')
     p.address(0x12, 'lcall', 0x2e58)
     p.address(0x90, 'mov dptr,#', STATE)
     p.emit('movx a,@dptr', 0xe0)
     p.branch(0x60, 'jz', 'xinput_done')
+    p.branch(0xb4, 'cjne', 'xinput_check_sega', 1)
     p.address(0x90, 'mov dptr,#', 0x8433)
     p.emit('movx a,@dptr', 0xe0)
     p.emit('anl a,#0x03', 0x54, 3)
@@ -119,12 +145,26 @@ def extension():
     p.emit('xrl a,#0x03', 0x64, 3)
     p.emit('movx @dptr,a', 0xf0)
     p.emit('ret', 0x22)
+    p.label('xinput_check_sega')
+    p.branch(0xb4, 'cjne', 'xinput_done', 2)  # Unknown state fails closed to stock.
+    p.emit('mov a,0x52', 0xe5, 0x52)
+    p.emit('anl a,#0x40', 0x54, 0x40)
+    p.branch(0x60, 'jz', 'xinput_sega')
+    # The stock dispatcher can exchange A/B and X/Y before building XInput.
+    # Use the corresponding positions so the physical-button rotation is stable.
+    p.label('xinput_sega_flipped')
+    permute_byte('xinput_flipped', [(0,4), (1,0), (5,7), (4,5), (7,1)])
+    p.emit('ret', 0x22)
+    p.label('xinput_sega')
+    permute_byte('xinput_sega', [(0,5), (1,0), (4,6), (5,4), (6,1)])
+    p.emit('ret', 0x22)
 
     p.label('ps3_report')
     p.address(0x12, 'lcall', 0x237d)
     p.address(0x90, 'mov dptr,#', STATE)
     p.emit('movx a,@dptr', 0xe0)
     p.branch(0x60, 'jz', 'ps3_done')
+    p.branch(0xb4, 'cjne', 'ps3_check_sega', 1)
     p.address(0x90, 'mov dptr,#', 0x8433)
     p.emit('movx a,@dptr', 0xe0)
     p.emit('anl a,#0x0c', 0x54, 0x0c)
@@ -149,8 +189,39 @@ def extension():
     p.emit('movx @dptr,a', 0xf0)
     p.label('ps3_done')
     p.emit('ret', 0x22)
+    p.label('ps3_check_sega')
+    p.branch(0xb4, 'cjne', 'ps3_done', 2)
+    p.label('ps3_sega')
+    permute_byte('ps3_sega', [(2,6), (3,2), (4,3), (5,4), (6,5)])
+    # Pressure fields C,Z,X,A,B are contiguous. Rotate without losing the first.
+    p.address(0x90, 'mov dptr,#', 0x8444)
+    p.emit('movx a,@dptr', 0xe0)
+    p.emit('mov r7,a', 0xff)
+    for target in range(0x8444, 0x8448):
+        p.address(0x90, 'mov dptr,#', target + 1)
+        p.emit('movx a,@dptr', 0xe0)
+        p.address(0x90, 'mov dptr,#', target)
+        p.emit('movx @dptr,a', 0xf0)
+    p.address(0x90, 'mov dptr,#', 0x8448)
+    p.emit('mov a,r7', 0xef)
+    p.emit('movx @dptr,a', 0xf0)
+    p.emit('ret', 0x22)
     code, listing = p.finish()
     return code, listing, p.labels
+
+
+def patch_regions(code, labels):
+    return [
+        (0x26b6, bytes.fromhex('75 51 04'), bytes([2]) + labels['toggle'].to_bytes(2, 'big'),
+         'Start+Right: volatile Street Fighter preset; retain other profiles'),
+        (0x26e1, bytes.fromhex('75 51 02'), bytes([2]) + labels['toggle_sega'].to_bytes(2, 'big'),
+         'Start+Up: volatile SEGA preset; retain other profiles'),
+        (0x34f4, bytes.fromhex('12 23 7d'), bytes([0x12]) + labels['ps3_report'].to_bytes(2, 'big'),
+         'PS3 report postprocessing; stock builder and analog axes unchanged'),
+        (0x34fb, bytes.fromhex('12 2e 58'), bytes([0x12]) + labels['xinput_report'].to_bytes(2, 'big'),
+         'XInput report postprocessing; stock builder and analog axes unchanged'),
+        (CODE_START, b'\xff' * len(code), code, '8051 extension in unused application ROM'),
+    ]
 
 
 def build(stock, updater):
@@ -169,15 +240,7 @@ def build(stock, updater):
     check(CODE_START + len(code) < 0x7fc0, 'Extension overlaps device metadata')
     check(original[CODE_START:CODE_START+len(code)] == b'\xff' * len(code),
           'Extension space is not empty')
-    patches = [
-        (0x26b6, bytes.fromhex('75 51 04'), bytes([2]) + labels['toggle'].to_bytes(2, 'big'),
-         'Start+Right: volatile PC toggle; retain legacy shortcut in other profiles'),
-        (0x34f4, bytes.fromhex('12 23 7d'), bytes([0x12]) + labels['ps3_report'].to_bytes(2, 'big'),
-         'PS3 report postprocessing; stock builder and analog axes unchanged'),
-        (0x34fb, bytes.fromhex('12 2e 58'), bytes([0x12]) + labels['xinput_report'].to_bytes(2, 'big'),
-         'XInput report postprocessing; stock builder and analog axes unchanged'),
-        (CODE_START, b'\xff' * len(code), code, '8051 extension in unused application ROM'),
-    ]
+    patches = patch_regions(code, labels)
     modified = bytearray(original)
     allowed = set()
     for offset, before, after, _ in patches:
@@ -205,7 +268,8 @@ def build(stock, updater):
         'candidate_sha256': digest(encoded), 'decoded_candidate_sha256': digest(modified),
         'bytes': len(encoded), 'changed_bytes': len(differences),
         'default': 'Stock mapping on receiver power-up',
-        'activation': 'Hold Start+D-pad Right through the stock long-press threshold, then release; repeat to toggle off',
+        'activation': 'Hold Start+Right for Street Fighter or Start+Up for SEGA, then release. Repeat the active shortcut for stock; the other selects its preset without stacking.',
+        'states': {'0': 'Stock', '1': 'Street Fighter (C/Z exchange)', '2': 'SEGA (relative to Street Fighter: X/A/B actions move to A/B/C; C action moves to X)'},
         'hold_threshold': '0x0271 (625) stock macro iterations after initial chord detection; wall-clock timing requires hardware confirmation',
         'state_xdata': f'0x{STATE:04x}', 'persistent': False,
         'profiles': ['XInput (3)', 'PS3 compatibility (2)'],

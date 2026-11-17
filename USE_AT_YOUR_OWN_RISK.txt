@@ -22,8 +22,10 @@ identify the hardware, do not flash it.
 
 WHAT HAS AND HAS NOT BEEN VALIDATED
 One user reported successful installation and C/Z toggle operation with the
-custom image on a V2 USB receiver and Polymega on November 16, 2026. This is a
-limited user report, not a broad compatibility or recovery test. Automated
+earlier alpha.1-alpha.5 firmware in a fighting-game test on November 16, 2026.
+That layout did not correct every game. Alpha.6 adds a SEGA preset; this new
+image has NOT yet been flashed or tested on hardware. The earlier report is
+not evidence that the new image will install or work, nor a recovery test. Automated
 checks cover reproducible builds, file integrity, selected 8051 instructions
 and simulated USB reports. Passing checks, matching hashes and
 preserving boot-region bytes do NOT establish that flashing is safe or that

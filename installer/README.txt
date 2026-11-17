@@ -15,19 +15,24 @@ INSTALL (Windows 10/11, internet connection required)
 4. Re-sync (pair) the receiver with the controller after updating, before playing.
 
 USE
-Stock mapping on Polymega has C and Z reversed. This patch only toggles that
-swap; the rest of the stock mapping is preserved. Duplicate L/R buttons follow C/Z.
-Use USB mode with two green lights on Polymega (three on Mac). Hold Start +
-D-pad Right, then release, to swap C and Z. Repeat to restore stock mapping.
-Reconnecting the USB receiver resets to stock mapping. ZL/ZR remain Saturn L/R.
-For analog games, enable Analog in Polymega's in-game controller settings.
+Use USB mode with two green lights on Polymega (three on Mac).
+Hold a shortcut, then release:
+- Start + Right: Street Fighter layout (C/Z swap).
+- Start + Up: SEGA layout. Relative to Street Fighter layout, X/A/B actions
+  move to A/B/C and C's action moves to X. Y/Z/ZL/ZR keep the same outputs.
+Repeat the active shortcut for stock. The other selects its layout directly;
+they do not stack. Reconnecting the receiver restores stock.
+Duplicate shoulder L/R follow C/Z. For analog games, enable Analog in
+Polymega's own in-game controller settings.
 
-The same receiver may help other USB hosts with reversed C/Z in XInput or PS3
-mode; those hosts are untested.
+SEGA layout targets games whose A/B/C actions fall on physical X/A/B.
+These are manual presets; the receiver does not identify games. Other hosts,
+including Evercade, are untested.
 
-One user reported successful installation and C/Z toggle operation on Polymega.
-Recovery after a failed flash remains untested. Vendor files are obtained
-directly from Retro-Bit during setup; this ZIP contains only project files.
+Alpha.6 adds SEGA layout and passes offline checks, but this new firmware has
+not yet been tested on a receiver. The earlier C/Z-only firmware was reported
+working in a fighting-game test on one Polymega setup. It did not fix every
+game. Recovery after a failed flash remains untested.
 
 Project, full risk notice, and technical details:
 https://github.com/SuperWes/retro-bit-2.4-wireless-pro-controller-polymega-custom-firmware

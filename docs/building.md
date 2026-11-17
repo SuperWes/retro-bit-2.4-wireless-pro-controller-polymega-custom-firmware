@@ -19,10 +19,10 @@ Add `--output build/validated-toggle` to save a verified package. Inputs are che
 
 Validation covers:
 
-- 589,824 stock/candidate report comparisons: all 8,192 relevant digital input combinations, nine D-pad states, two PC profiles, toggle off/on and the existing face-button-flip option off/on.
-- 851,968 independent analog-report checks in total, including 262,144 reports covering every left-stick X/Y pair in both profiles and both toggle states.
-- Actual macro and report-dispatch instructions: hold threshold, repeat prevention, release/rearming, interrupted holds, diagonal rejection, stock legacy shortcuts, no nonvolatile save for the PC toggle and reset to stock at receiver startup.
-- Deliberately broken images rejected for a missing toggle, missing report hooks, inverted default behavior and corrupted analog conversion.
+- 884,736 stock/candidate report comparisons: all 8,192 relevant digital input combinations, nine D-pad states, two PC profiles, all three presets and the existing face-button-flip option off/on.
+- 1,277,952 independent analog-report checks in total, including 393,216 reports covering every left-stick X/Y pair in both profiles and all three presets.
+- Actual macro and report-dispatch instructions: both shortcuts, every preset transition, hold threshold, repeat prevention, release/rearming, interrupted holds, diagonal rejection, stock legacy shortcuts, no nonvolatile save for either PC shortcut and reset to stock at receiver startup.
+- Deliberately broken images rejected for a missing shortcuts, missing report hooks, missing SEGA processing (including the stock face-button-flip option), inverted default behavior and corrupted analog conversion.
 
 The interpreter models PS3's unchanged template-copy helper and observes legacy settings-save calls without emulating their nonvolatile hardware. Inputs begin after stock radio parsing/calibration. Radio, interrupts, USB negotiation, flash, the complete MCU and Polymega are not emulated. See [implementation notes](implementation.md) for patch addresses and limits.
 

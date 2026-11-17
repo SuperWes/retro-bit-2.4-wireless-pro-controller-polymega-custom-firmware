@@ -14,7 +14,7 @@ $ArchiveHash = '69ac4480738d2c5c3929dd92ce89cd1cf91ec204f866a6f830987c40d3dcd6c3
 $StockHash = '12c69fc5ebd2e76e40394428960548b79fe44e5a69d728691a8ad52b478bd55a'
 $UpdaterHash = '27f11a4bb3becc5426025025fe376d45f9b6da54f41a347750466f069592b4d7'
 $DecodedHash = '996a4eaed2ea0fd570b4960e6a1d85d15f0a0f1e747d63173e3e179d0158df76'
-$FirmwareHash = 'b3f78325ae7de66e7f416fc9f55a4b191a507c2025790d8caa64157aebc5e935'
+$FirmwareHash = '951904f60c5730deaeb92db09039a9c594e2c70e9d8e34b3c14bcbf103dcea54'
 $FirmwareName = 'retrobit_usb_pro_1.1_polymega_toggle_EXPERIMENTAL.bxw'
 $ArchiveRoot = 'V2 USB Receiver - Pro Controller - 1.1 Firmware - Switch 2 Compatibility/V2 USB Receiver - SEGA Controller - 1.0 Firmware/'
 $InstructionsName = 'Retro-Bit V2 USB Receiver for Pro Controllers - Firmware Installation.pdf'
@@ -42,18 +42,24 @@ The updater and PDF were downloaded from Retro-Bit; they are not an endorsement
 of this modified image. Keep the original stock download for possible recovery.
 
 USE
-Stock mapping on Polymega has C and Z reversed. This patch only toggles that
-swap; the rest of the stock mapping is preserved. Duplicate L/R buttons follow C/Z.
-Use USB mode with two green lights on Polymega (three on Mac). Hold Start + D-pad
-Right, then release, to swap C and Z. Repeat to restore stock mapping.
-Reconnecting the USB receiver resets to stock mapping. ZL/ZR remain Saturn L/R.
-For analog games, enable Analog in Polymega's in-game controller settings.
+Use USB mode with two green lights on Polymega (three on Mac).
+Hold a shortcut, then release:
+- Start + Right: Street Fighter layout (C/Z swap).
+- Start + Up: SEGA layout. Relative to Street Fighter layout, X/A/B actions
+  move to A/B/C and C's action moves to X. Y/Z/ZL/ZR keep the same outputs.
+Repeat the active shortcut for stock. The other selects its layout directly;
+they do not stack. Reconnecting the receiver restores stock.
+Duplicate shoulder L/R follow C/Z. For analog games, enable Analog in
+Polymega's own in-game controller settings.
 
-The same receiver may help other USB hosts with reversed C/Z in XInput or PS3
-mode; those hosts are untested.
+SEGA layout targets games whose A/B/C actions fall on physical X/A/B.
+These are manual presets; the receiver does not identify games. Other hosts,
+including Evercade, are untested.
 
-One user reported successful installation and C/Z toggle operation on Polymega.
-Recovery after a failed flash has not been tested.
+Alpha.6 adds SEGA layout and passes offline checks, but this new firmware has
+not yet been tested on a receiver. The earlier C/Z-only firmware was reported
+working in a fighting-game test on one Polymega setup. It did not fix every
+game. Recovery after a failed flash remains untested.
 
 Project, full risk notice, and technical details:
 https://github.com/SuperWes/retro-bit-2.4-wireless-pro-controller-polymega-custom-firmware

@@ -6,6 +6,7 @@
 
 static constexpr uint16_t state_address = 0x85ff;
 static constexpr uint32_t start_button = 1u << 22, right_button = 1u << 13;
+static constexpr uint32_t up_button = 1u << 14;
 static constexpr uint32_t chord = start_button | right_button;
 static constexpr unsigned hold_ticks = 625;
 static uint64_t macro_iterations = 0;
@@ -28,14 +29,14 @@ static Bytes output(CPU& c, unsigned mode) {
     return out;
 }
 
-static Bytes report(const Bytes& rom, unsigned mode, bool enabled, uint32_t raw,
+static Bytes report(const Bytes& rom, unsigned mode, uint8_t preset, uint32_t raw,
                     const std::array<uint8_t,4>& axes, uint8_t lt, uint8_t rt, uint8_t options=0) {
     CPU c(rom);
-    c.xd(0x8542)=mode; c.xd(state_address)=enabled;
+    c.xd(0x8542)=mode; c.xd(state_address)=preset;
     c.d[0x51]=1; c.d[0x52]=options;
     inputs(c,raw,axes,lt,rt);
     auto out=output(c,mode);
-    require(c.xd(state_address)==enabled, "Report builder changed toggle state");
+    require(c.xd(state_address)==preset, "Report builder changed toggle state");
     require(c.modeled_nv_saves==0, "Report processing reached a settings save");
     require(c.modeled_template_copies==(mode==2 ? 1u : 0u), "Wrong report builder dispatched");
     for (unsigned i=0; i<4; ++i)
@@ -45,9 +46,19 @@ static Bytes report(const Bytes& rom, unsigned mode, bool enabled, uint32_t raw,
     return out;
 }
 
-static uint8_t exchange(uint8_t b, unsigned first, unsigned second) {
-    const auto different=((b>>first)^(b>>second))&1;
-    return b ^ ((different<<first)|(different<<second));
+// Physical A/B/X/Y are raw bits 8/9/10/11. The pinned stock Switch table
+// maps those to recorded USB bits 3/2/1/0, respectively (guided button capture).
+// Use a physical-input model, independent of the extension's report-bit code.
+static uint32_t mapped_input(uint32_t raw, unsigned preset) {
+    if (preset == 0 || preset > 2) return raw;
+    if (preset == 1) {
+        return (raw & ~((1u<<16)|(1u<<18))) |
+               ((raw & (1u<<16)) << 2) | ((raw & (1u<<18)) >> 2);
+    }
+    return (raw & ~((1u<<8)|(1u<<9)|(1u<<10)|(1u<<16)|(1u<<18))) |
+           ((raw & (1u<<8)) << 2) | ((raw & (1u<<9)) >> 1) |
+           ((raw & (1u<<10)) << 8) | ((raw & (1u<<16)) >> 7) |
+           ((raw & (1u<<18)) >> 2);
 }
 
 static void verify_analog(const Bytes& out, unsigned mode, uint32_t raw,
@@ -84,77 +95,105 @@ static void hold(CPU& c, uint32_t raw=chord) {
 }
 
 static void check_macro(const Bytes& stock, const Bytes& changed) {
-    for (unsigned mode : {2u,3u}) {
+    for (unsigned mode : {2u,3u}) for (unsigned preset : {1u,2u}) {
+        const uint32_t selected_chord = start_button | (preset==1 ? right_button : up_button);
         CPU c(changed);
         c.xd(0x8542)=mode; c.d[0x51]=1;
-        require(c.xd(state_address)==0, "Default mapping enabled unexpectedly");
-        tick(c,chord);
-        for (unsigned i=0; i<hold_ticks-1; ++i) tick(c,chord);
-        require(c.xd(state_address)==0, "Toggle fired before full hold threshold");
-        tick(c,chord);
-        require(c.xd(state_address)==1, "Start+Right failed to enable correction");
-        for (unsigned i=0; i<70000; ++i) tick(c,chord);
-        require(c.xd(state_address)==1, "Held chord repeated or counter wrapped");
+        tick(c,selected_chord);
+        for (unsigned i=0; i<hold_ticks-1; ++i) tick(c,selected_chord);
+        require(c.xd(state_address)==0, "Preset fired before full hold threshold");
+        tick(c,selected_chord);
+        require(c.xd(state_address)==preset, preset==1 ? "Start+Right failed" : "Start+Up failed");
+        for (unsigned i=0; i<70000; ++i) tick(c,selected_chord);
+        require(c.xd(state_address)==preset, "Held chord repeated or counter wrapped");
         require(c.d[0x4c]==255 && c.d[0x4d]==255, "Stock hold counter failed to saturate");
         require(c.d[0x51]==1 && c.d[0x52]==0, "PC shortcut changed legacy layout state");
-        require(c.modeled_nv_saves==0, "PC toggle attempted a nonvolatile settings write");
-
-        // Release only Right, retain Start, and press Right again to disable.
-        tick(c,start_button);
-        hold(c);
+        require(c.modeled_nv_saves==0, "PC preset attempted a nonvolatile settings write");
+        tick(c,start_button); // Releasing just the direction is sufficient.
+        hold(c,selected_chord);
         require(c.xd(state_address)==0, "Second hold failed to restore stock mapping");
-        // Short holds separated by release must not accumulate.
         tick(c,0);
-        for (unsigned i=0; i<400; ++i) tick(c,chord);
+        for (unsigned i=0; i<400; ++i) tick(c,selected_chord);
         tick(c,0);
-        for (unsigned i=0; i<400; ++i) tick(c,chord);
+        for (unsigned i=0; i<400; ++i) tick(c,selected_chord);
         require(c.xd(state_address)==0, "Separate short holds accumulated");
         tick(c,0);
-        hold(c);
-        require(c.xd(state_address)==1, "Toggle did not rearm after release");
-
-        // Verify an actual sequence from macro activation through report dispatch,
-        // including simultaneous C, ZL, D-pad, and independent analog sticks.
-        inputs(c,(1u<<16)|(1u<<7)|(1u<<12),{31,219,17,231},13,29);
+        hold(c,selected_chord);
+        require(c.xd(state_address)==preset, "Preset did not rearm after release");
+        const uint32_t raw=(1u<<16)|(1u<<8)|(1u<<7)|(1u<<12);
+        inputs(c,raw,{31,219,17,231},13,29);
         auto after=output(c,mode);
-        auto expected=report(stock,mode,false,(1u<<18)|(1u<<7)|(1u<<12),{31,219,17,231},13,29);
+        auto expected=report(stock,mode,0,mapped_input(raw,preset),{31,219,17,231},13,29);
         require(after==expected, "Macro state did not reach the USB report dispatcher");
-        verify_analog(after,mode,(1u<<16)|(1u<<7)|(1u<<12),{31,219,17,231},13,29);
-
-        // The unchanged cold-start loop really clears the allocated volatile byte.
+        verify_analog(after,mode,raw,{31,219,17,231},13,29);
         c.run(0x376e,0x1d24);
         require(c.xd(state_address)==0, "Cold start did not restore stock mapping");
         c.xd(0x8542)=mode; c.d[0x51]=1;
         inputs(c,1u<<16,{128,128,128,128});
-        require(output(c,mode)==report(stock,mode,false,1u<<16,{128,128,128,128},0,0),
+        require(output(c,mode)==report(stock,mode,0,1u<<16,{128,128,128,128},0,0),
                 "Post-reset report differs from stock");
-
-        for (uint32_t other : {start_button,right_button,chord|(1u<<12),chord|(1u<<14),chord|(1u<<15)}) {
-            CPU rejected(changed); rejected.xd(0x8542)=mode;
+    }
+    // Every directed transition, including switching directions while keeping
+    // Start held, selects an entire preset rather than accumulating toggles.
+    for (unsigned mode : {2u,3u}) for (unsigned initial : {0u,1u,2u}) {
+        for (unsigned target : {1u,2u}) {
+            CPU c(changed); c.xd(0x8542)=mode; c.d[0x51]=1;
+            if (initial) hold(c,start_button|(initial==1 ? right_button : up_button));
+            require(c.xd(state_address)==initial, "Initial preset selection failed");
+            if (initial==target) tick(c,start_button);
+            hold(c,start_button|(target==1 ? right_button : up_button));
+            require(c.xd(state_address)==(initial==target ? 0 : target), "Presets stacked or transition failed");
+            require(c.modeled_nv_saves==0, "Preset transition wrote nonvolatile settings");
+        }
+        for (uint32_t other : {start_button,right_button,up_button,
+                              chord|(1u<<12),chord|up_button,chord|(1u<<15),
+                              start_button|up_button|(1u<<12),start_button|up_button|(1u<<15)}) {
+            CPU rejected(changed); rejected.xd(0x8542)=mode; rejected.xd(state_address)=initial;
             for (unsigned i=0; i<1500; ++i) tick(rejected,other);
-            require(rejected.xd(state_address)==0, "Unrelated or diagonal shortcut toggled C/Z");
+            require(rejected.xd(state_address)==initial, "Unrelated or diagonal shortcut changed preset");
         }
     }
-    // The non-PC path must still call the original shortcut/settings-save path.
-    for (unsigned mode : {0u,1u}) {
+    // Both displaced shortcuts still run their original save paths in non-PC profiles.
+    for (unsigned mode : {0u,1u}) for (unsigned preset : {1u,2u}) {
         CPU before(stock), after(changed);
         before.xd(0x8542)=mode; after.xd(0x8542)=mode;
-        before.d[0x51]=after.d[0x51]=2;
-        after.xd(state_address)=1;
-        hold(before); hold(after);
-        require(after.xd(state_address)==1, "Non-PC shortcut modified PC toggle state");
-        require(before.d[0x51]==4 && after.d[0x51]==4, "Legacy Start+Right layout changed");
+        before.d[0x51]=after.d[0x51]=1;
+        before.d[0x52]=after.d[0x52]=0x40;
+        after.xd(state_address)=2;
+        uint32_t selected_chord=start_button|(preset==1 ? right_button : up_button);
+        hold(before,selected_chord); hold(after,selected_chord);
+        require(after.xd(state_address)==2, "Non-PC shortcut modified PC preset state");
+        require(before.d[0x51]==(preset==1 ? 4 : 2) && before.d[0x51]==after.d[0x51],
+                "Legacy layout changed");
         require(before.modeled_nv_saves==1 && after.modeled_nv_saves==1,
-                "Legacy Start+Right no longer follows stock settings-save path");
+                "Legacy shortcut no longer follows stock settings-save path");
         for (unsigned i=0x4c; i<=0x52; ++i)
             require(before.d[i]==after.d[i], "Legacy macro state changed");
     }
-    for (uint8_t initial : {0u,1u,85u,255u}) {
+    for (uint8_t initial : {0u,1u,2u,85u,255u}) {
         CPU c(changed); c.x.fill(0xa5); c.xd(state_address)=initial;
         c.run(0x376e,0x1d24);
         require(std::all_of(c.x.begin(),c.x.end(),[](uint8_t v){return v==0;}),
                 "Startup memory clear did not cover the allocated state");
     }
+}
+
+static void check_physical_layout(const Bytes& stock, const Bytes& changed) {
+    // Independently spell out each physical face button's expected stock output
+    // identity. For SEGA: A takes X, B takes A, C takes B, X takes stock Z,
+    // Y stays Y and Z takes stock C. This includes the Street Fighter C/Z routing.
+    const unsigned physical[]={8,9,16,10,11,18}; // A B C X Y Z
+    const unsigned targets[][6]={{8,9,16,10,11,18},{8,9,18,10,11,16},{10,8,9,18,11,16}};
+    for (unsigned mode : {2u,3u}) for (unsigned preset : {0u,1u,2u})
+        for (uint8_t options : {0u,0x40u}) for (unsigned i=0;i<6;++i) {
+            require(report(changed,mode,preset,1u<<physical[i],{128,128,128,128},0,0,options)==
+                    report(stock,mode,0,1u<<targets[preset][i],{128,128,128,128},0,0,options),
+                    "Physical button layout mismatch");
+        }
+    // Corrupt/uninitialized values must not accidentally enable a partial preset.
+    for (unsigned mode : {2u,3u}) for (uint8_t invalid : {3u,85u,255u})
+        require(report(changed,mode,invalid,0x010100,{0,255,31,219},17,43)==
+                report(stock,mode,0,0x010100,{0,255,31,219},17,43), "Unknown preset did not preserve stock");
 }
 
 int main(int argc, char** argv) {
@@ -164,6 +203,7 @@ int main(int argc, char** argv) {
         auto stock=read(argv[1]), changed=read(argv[2]);
         require(stock.size()==32768 && changed.size()==32768,"Wrong ROM size");
         check_macro(stock,changed);
+        check_physical_layout(stock,changed);
         const unsigned bits[]={8,9,10,11,16,18,7,6,17,19,20,22,21};
         const uint32_t dpad[]={1u<<14,(1u<<14)|(1u<<13),1u<<13,(1u<<13)|(1u<<15),
                                1u<<15,(1u<<15)|(1u<<12),1u<<12,(1u<<12)|(1u<<14),0};
@@ -177,19 +217,10 @@ int main(int argc, char** argv) {
                 std::array<uint8_t,4> axes={uint8_t(mask),uint8_t(mask>>3),uint8_t(mask*37+hat),uint8_t(mask*13-hat)};
                 uint8_t lt=mask*17+hat, rt=mask*31+hat;
                 for (unsigned mode : {2u,3u}) for (uint8_t options : {0u,0x40u}) {
-                    auto before=report(stock,mode,false,input,axes,lt,rt,options);
-                    auto expected=before;
-                    for (bool enabled : {false,true}) {
-                        if (enabled) {
-                            expected[3]=exchange(before[3],mode==2 ? 2 : 0,mode==2 ? 3 : 1);
-                            if (mode==2) std::swap(expected[20],expected[21]);
-                        }
-                        auto after=report(changed,mode,enabled,input,axes,lt,rt,options);
-                        require(after==expected, "Report differs beyond the optional C/Z swap");
-                        bool c=input&(1u<<16), z=input&(1u<<18);
-                        require(bool(after[3]&(mode==2 ? 4 : 1))==(enabled ? z : c) &&
-                                bool(after[3]&(mode==2 ? 8 : 2))==(enabled ? c : z),
-                                "C/Z output model mismatch");
+                    for (uint8_t preset : {0u,1u,2u}) {
+                        auto expected=report(stock,mode,0,mapped_input(input,preset),axes,lt,rt,options);
+                        auto after=report(changed,mode,preset,input,axes,lt,rt,options);
+                        require(after==expected, "Report differs from physical preset model");
                         if (mode==3) require((after[2]&15)==xhat[hat], "Independent D-pad changed");
                         verify_analog(after,mode,input,axes,lt,rt);
                         ++comparisons; ++analog_reports;
@@ -202,8 +233,8 @@ int main(int argc, char** argv) {
         uint64_t xy_reports=0;
         for (unsigned x=0; x<256; ++x) for (unsigned y=0; y<256; ++y) {
             std::array<uint8_t,4> axes={uint8_t(x),uint8_t(y),uint8_t(255-y),uint8_t(255-x)};
-            for (unsigned mode : {2u,3u}) for (bool enabled : {false,true}) {
-                auto out=report(changed,mode,enabled,right_button,axes,uint8_t(x),uint8_t(y));
+            for (unsigned mode : {2u,3u}) for (uint8_t preset : {0u,1u,2u}) {
+                auto out=report(changed,mode,preset,right_button,axes,uint8_t(x),uint8_t(y));
                 verify_analog(out,mode,right_button,axes,uint8_t(x),uint8_t(y));
                 require(mode==2 ? bool(out[2]&0x20) : (out[2]&15)==8, "D-pad lost during analog sweep");
                 ++xy_reports; ++analog_reports;

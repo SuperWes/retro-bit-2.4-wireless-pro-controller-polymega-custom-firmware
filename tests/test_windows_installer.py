@@ -17,7 +17,7 @@ from build_cz_swap import SOURCE_URL
 
 ARCHIVE_SHA = '69ac4480738d2c5c3929dd92ce89cd1cf91ec204f866a6f830987c40d3dcd6c3'
 # The complete expected image fingerprint, independent of the installer template.
-FIRMWARE_SHA = 'b3f78325ae7de66e7f416fc9f55a4b191a507c2025790d8caa64157aebc5e935'
+FIRMWARE_SHA = '951904f60c5730deaeb92db09039a9c594e2c70e9d8e34b3c14bcbf103dcea54'
 
 
 def run_installer(script, destination, official=None, expected_error=None):

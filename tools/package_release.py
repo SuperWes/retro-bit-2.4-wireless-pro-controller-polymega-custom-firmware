@@ -14,13 +14,8 @@ import build_polymega_toggle as firmware
 
 def package(output):
     code, _, labels = firmware.extension()
-    patches = [
-        (0x26b6, bytes.fromhex('75 51 04'), bytes([2]) + labels['toggle'].to_bytes(2, 'big')),
-        (0x34f4, bytes.fromhex('12 23 7d'), bytes([0x12]) + labels['ps3_report'].to_bytes(2, 'big')),
-        (0x34fb, bytes.fromhex('12 2e 58'), bytes([0x12]) + labels['xinput_report'].to_bytes(2, 'big')),
-        (firmware.CODE_START, b'\xff' * len(code), code),
-    ]
-    table = json.dumps([{'offset': o, 'before': b.hex(), 'after': a.hex()} for o, b, a in patches], indent=2)
+    table = json.dumps([{'offset': o, 'before': b.hex(), 'after': a.hex()}
+                        for o, b, a, _ in firmware.patch_regions(code, labels)], indent=2)
     script = (ROOT/'installer/Install.ps1').read_text()
     assert script.count('@@PATCH_TABLE_JSON@@') == 1
     script = script.replace('@@PATCH_TABLE_JSON@@', table)

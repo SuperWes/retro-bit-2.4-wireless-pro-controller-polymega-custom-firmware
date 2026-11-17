@@ -1,17 +1,17 @@
 {
   "status": "passed",
-  "report_comparisons": 589824,
-  "analog_report_checks": 851968,
-  "xy_sweep_reports": 262144,
-  "macro_iterations": 162868,
+  "report_comparisons": 884736,
+  "analog_report_checks": 1277952,
+  "xy_sweep_reports": 393216,
+  "macro_iterations": 380260,
   "hardware_tested": false,
   "scope": "Actual report dispatcher, macro detector/hook, and startup RAM-clear instructions. PS3 template copy and legacy NVM save modeled.",
   "reproducible_build": "Byte-identical CLI/library rebuild",
-  "candidate_sha256": "b3f78325ae7de66e7f416fc9f55a4b191a507c2025790d8caa64157aebc5e935",
+  "candidate_sha256": "951904f60c5730deaeb92db09039a9c594e2c70e9d8e34b3c14bcbf103dcea54",
   "negative_controls": [
     {
       "name": "unmodified_stock",
-      "rejected_with": "Start+Right failed to enable correction"
+      "rejected_with": "Start+Right failed"
     },
     {
       "name": "missing_ps3_dispatch_hook",
@@ -19,6 +19,22 @@
     },
     {
       "name": "missing_xinput_dispatch_hook",
+      "rejected_with": "Macro state did not reach the USB report dispatcher"
+    },
+    {
+      "name": "missing_start_up_hook",
+      "rejected_with": "Start+Up failed"
+    },
+    {
+      "name": "missing_xinput_sega",
+      "rejected_with": "Macro state did not reach the USB report dispatcher"
+    },
+    {
+      "name": "missing_xinput_sega_flipped",
+      "rejected_with": "Physical button layout mismatch"
+    },
+    {
+      "name": "missing_ps3_sega",
       "rejected_with": "Macro state did not reach the USB report dispatcher"
     },
     {
@@ -35,12 +51,12 @@
     "wrong_updater"
   ],
   "source_sha256": {
-    "build_polymega_toggle.py": "aef01ecdcbd73a149793d60bca0e388129ce1aa3cc40ad71db6d62af36e15057",
+    "build_polymega_toggle.py": "4e71284c4ff288d22e7f68e4990586097c6b12482a72cc30810e7c33d0404ac5",
     "build_cz_swap.py": "b8318a19f78ea7b5806251c8f6053d136aaeed97f00d674dbd9790c8ddbb297e",
     "tests/emu8051.hpp": "0772dbb3083d654874be5d3861337c6bb6096acfd3ac4712573b35956415c24b",
-    "tests/verify_polymega_toggle.cpp": "28ba1bac7e407349f42fd190b3d747d14d611f209dbbb4161612af1b25d95172",
-    "tests/run_validation.py": "4bfc0bacdcd262b3cf261de5119a1493240ba711babc87b46b053fb077dbe4f4",
-    "USE_AT_YOUR_OWN_RISK.txt": "94d9f839fc43fe5b50e64a257be5ef68211996edfb45098fcfa4c34ecdb9a3b2"
+    "tests/verify_polymega_toggle.cpp": "b7d7403ca3e190c84ebf8916f5a3f2210cf592ef1688a36d5cd12354f32a1d22",
+    "tests/run_validation.py": "2851dbcc5e59b80c51f3c6493d1003150d85394c4a91859b034a0d94c4f7988a",
+    "USE_AT_YOUR_OWN_RISK.txt": "564fe851a136406d66a56f4fe80301754c1fb11c4aee241f3c0ea84c7fb2a4c9"
   },
   "limitations": [
     "Report inputs start after stock radio parsing/calibration; those unchanged paths are not emulated.",

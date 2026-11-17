@@ -22,16 +22,24 @@ firmware; it does not include their updater, DLLs, or manual. Permission to
 redistribute the underlying vendor firmware has not been established.
 
 USE
-Stock mapping on Polymega has C and Z reversed. Hold Start + D-pad Right,
-then release, to toggle that swap. Repeat to restore stock mapping.
-Reconnecting the USB receiver resets to stock. The rest of the mapping is
-preserved; duplicate L/R buttons follow C/Z. ZL/ZR remain Saturn L/R.
-Use two green lights on Polymega (three on Mac). For analog games, enable
-Analog in Polymega's own in-game controller settings.
+Use USB mode with two green lights on Polymega (three on Mac).
+Hold a shortcut, then release:
+- Start + Right: Street Fighter layout (C/Z swap).
+- Start + Up: SEGA layout. Relative to Street Fighter layout, X/A/B actions
+  move to A/B/C and C's action moves to X. Y/Z/ZL/ZR keep the same outputs.
+Repeat the active shortcut for stock. The other selects its layout directly;
+they do not stack. Reconnecting the receiver restores stock.
+Duplicate shoulder L/R follow C/Z. For analog games, enable Analog in
+Polymega's own in-game controller settings.
 
-The firmware is unchanged from the previous release. An already working
-receiver does not need another update. Other USB hosts with the same C/Z
-issue may benefit, but are untested. Recovery after a failed flash is untested.
+SEGA layout targets games whose A/B/C actions fall on physical X/A/B.
+These are manual presets; the receiver does not identify games. Other hosts,
+including Evercade, are untested.
+
+Alpha.6 adds SEGA layout and passes offline checks, but this new firmware has
+not yet been tested on a receiver. The earlier C/Z-only firmware was reported
+working in a fighting-game test on one Polymega setup. It did not fix every
+game. Recovery after a failed flash remains untested.
 
 Project, full risk notice, and technical details:
 https://github.com/SuperWes/retro-bit-2.4-wireless-pro-controller-polymega-custom-firmware
